@@ -181,9 +181,10 @@
 # 13. End User represents and warrants that it has the legal authority
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
+from __future__ import absolute_import
 
 import spearmint
-from abstract_scheduler import AbstractScheduler
+from spearmint.schedulers.abstract_scheduler import AbstractScheduler
 import os
 import subprocess
 import sys

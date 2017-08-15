@@ -181,14 +181,14 @@
 # 13. End User represents and warrants that it has the legal authority
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
-
+from __future__ import absolute_import
 
 import numpy as np
-import kernel_utils
+from spearmint.kernels import kernel_utils
 
-from .abstract_kernel import AbstractKernel
-from ..utils          import priors
-from ..utils.param    import Param as Hyperparameter
+from spearmint.kernels.abstract_kernel import AbstractKernel
+from spearmint.utils          import priors
+from spearmint.utils.param    import Param as Hyperparameter
 
 SQRT_3 = np.sqrt(3.0)
 SQRT_5 = np.sqrt(5.0)

@@ -182,6 +182,7 @@
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
 
+import functools
 import numpy        as np
 
 from abc import ABCMeta, abstractmethod
@@ -222,9 +223,9 @@ def function_over_hypers(models, fun, *fun_args, **fun_kwargs):
     """
 
     # The the minimum of the number of states over the different models
-    min_num_states = reduce(min, map(lambda x: x.num_states, models), np.inf)
+    min_num_states = functools.reduce(min, map(lambda x: x.num_states, models), np.inf)
     
-    for i in xrange(min_num_states):
+    for i in range(min_num_states):
 
         for model in models:
             model.set_state(i)
@@ -243,7 +244,7 @@ def function_over_hypers(models, fun, *fun_args, **fun_kwargs):
 
         if isTuple:
             assert(len(result) == len(average))
-            for j in xrange(len(average)):
+            for j in range(len(average)):
                 assert(result[j].shape == average[j].shape)
                 average[j] += result[j]
         else:
@@ -252,7 +253,7 @@ def function_over_hypers(models, fun, *fun_args, **fun_kwargs):
     
     # Divide by numAveraged to get the average (right now we just have the sum)
     if isTuple:
-        for j in xrange(len(average)):
+        for j in range(len(average)):
             average[j] /= min_num_states
     else:
         average /= min_num_states

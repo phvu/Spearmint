@@ -181,17 +181,18 @@
 # 13. End User represents and warrants that it has the legal authority
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
-
+from __future__ import print_function
+from __future__ import absolute_import
 
 import sys
 import numpy        as np
 import numpy.random as npr
 import scipy.linalg as spla
 
-from .mcmc             import slice_sample
+from spearmint.sampling.mcmc             import slice_sample
 # from .mcmc             import slice_sample_simple as slice_sample
-from .abstract_sampler import AbstractSampler
-from ..utils           import param as hyperparameter_utils
+from spearmint.sampling.abstract_sampler import AbstractSampler
+from spearmint.utils           import param as hyperparameter_utils
 
 
 class WhitenedPriorSliceSampler(AbstractSampler): 
@@ -227,7 +228,7 @@ class WhitenedPriorSliceSampler(AbstractSampler):
         return lp
 
     def sample(self, model):
-        for i in xrange(self.thinning + 1):
+        for i in range(self.thinning + 1):
             params_array, new_latent_values, current_ll = self.sample_fun(model, **self.sampler_options)
             hyperparameter_utils.set_params_from_array(self.params, params_array)
             model.latent_values.set_value(new_latent_values)
@@ -253,7 +254,7 @@ class WhitenedPriorSliceSampler(AbstractSampler):
 if __name__ == '__main__':
 
     sys.path.append('..')
-    from utils import priors
+    from spearmint.utils import priors
 
     import matplotlib.pyplot as plt
 
@@ -266,15 +267,15 @@ if __name__ == '__main__':
 
     gsn = priors.Gaussian(mu = -1, sigma = 4)
 
-    for i in xrange(n):
+    for i in range(n):
         if i % 1000 == 0:
-            print 'Sample %d/%d' % (i,n)
+            print('Sample %d/%d' % (i,n))
 
         x, cur_ll = slice_sample(x, gsn. logprob)
         x_samples[i] = x.copy()
 
-    print '1D Gaussian actual mean: %f, mean of samples: %f' % (-1, np.mean(x_samples))
-    print '1D Gaussian actual sigma: %f, std of samples: %f' % (4, np.std(x_samples))
+    print('1D Gaussian actual mean: %f, mean of samples: %f' % (-1, np.mean(x_samples)))
+    print('1D Gaussian actual sigma: %f, std of samples: %f' % (4, np.std(x_samples)))
 
 
     plt.figure(1)
@@ -291,21 +292,21 @@ if __name__ == '__main__':
     x_samples = np.zeros((2,n))
     x = np.zeros(2)
 
-    for i in xrange(n):
+    for i in range(n):
         if i % 1000 == 0:
-            print 'Sample %d/%d' % (i,n)
+            print('Sample %d/%d' % (i,n))
 
         x, cur_ll = slice_sample(x, mvn.logprob)
         x_samples[:,i] = x.copy()
 
     mu_samp = np.mean(x_samples,axis=1)
-    print '2D Gaussian:'
-    print 'Actual mean:     [%f,%f]' % (mu[0], mu[1])
-    print 'Mean of samples: [%f,%f]' % (mu_samp[0], mu_samp[1])
-    print 'Actual Cov:'
-    print str(cov)
-    print 'Cov of samples'
-    print str(np.cov(x_samples))
+    print('2D Gaussian:')
+    print('Actual mean:     [%f,%f]' % (mu[0], mu[1]))
+    print('Mean of samples: [%f,%f]' % (mu_samp[0], mu_samp[1]))
+    print('Actual Cov:')
+    print(str(cov))
+    print('Cov of samples')
+    print(str(np.cov(x_samples)))
 
     # plt.figure(1)
     # plt.clf()

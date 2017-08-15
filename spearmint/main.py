@@ -262,7 +262,7 @@ def main():
     
     while True:
 
-        for resource_name, resource in resources.iteritems():
+        for resource_name, resource in resources.items():
 
             jobs = load_jobs(db, experiment_name)
             # resource.printStatus(jobs)
@@ -313,7 +313,7 @@ def tired(db, experiment_name, resources):
     return True if no resources are accepting jobs
     """
     jobs = load_jobs(db, experiment_name)
-    for resource_name, resource in resources.iteritems():
+    for resource_name, resource in resources.items():
         if resource.acceptingJobs(jobs):
             return False
     return True

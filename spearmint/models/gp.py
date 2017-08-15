@@ -181,6 +181,7 @@
 # 13. End User represents and warrants that it has the legal authority
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
+from __future__ import print_function
 
 import sys
 import logging
@@ -201,7 +202,7 @@ try:
     log    = logging.getLogger(module)
 except:
     log    = logging.getLogger()
-    print 'Not running from main.'
+    print('Not running from main.')
 
 DEFAULT_MCMC_ITERS = 10
 DEFAULT_BURNIN     = 100
@@ -274,7 +275,7 @@ class GP(AbstractModel):
             self.noiseless = False
 
     def _set_params_from_dict(self, hypers_dict):
-        for name, hyper in self.params.iteritems():
+        for name, hyper in self.params.items():
             self.params[name].value = hypers_dict[name]
 
     def _reset_params(self):
@@ -293,7 +294,7 @@ class GP(AbstractModel):
 
     def _prepare_cache(self):
         inputs_hash = hash(self.inputs.tostring())
-        for i in xrange(self.num_states):
+        for i in range(self.num_states):
             self.set_state(i)
             chol  = spla.cholesky(self.kernel.cov(self.inputs), lower=True)
             alpha = spla.cho_solve((chol, True), self.values - self.mean.value)
@@ -365,7 +366,7 @@ class GP(AbstractModel):
         self._samplers.append(SliceSampler(ls, beta_alpha, beta_beta, compwise=True, thinning=self.thinning))
 
     def _burn_samples(self, num_samples):
-        for i in xrange(num_samples):
+        for i in range(num_samples):
             for sampler in self._samplers:
                 sampler.sample(self)
 
@@ -373,7 +374,7 @@ class GP(AbstractModel):
 
     def _collect_samples(self, num_samples):
         hypers_list = []
-        for i in xrange(num_samples):
+        for i in range(num_samples):
             for sampler in self._samplers:
                 sampler.sample(self)
 
@@ -384,7 +385,7 @@ class GP(AbstractModel):
 
     def _collect_fantasies(self, pending):
         fantasy_values_list = []
-        for i in xrange(self.num_states):
+        for i in range(self.num_states):
             self.set_state(i)
             fantasy_vals = self._fantasize(pending)
             if fantasy_vals.ndim == 1:
@@ -463,7 +464,7 @@ class GP(AbstractModel):
     def to_dict(self):
         """return a dictionary that saves the values of the hypers and the chain length"""
         gp_dict = {'hypers' : {}}
-        for name, hyper in self.params.iteritems():
+        for name, hyper in self.params.items():
             gp_dict['hypers'][name] = hyper.value
 
         gp_dict['chain length'] = self.chain_length
@@ -641,7 +642,7 @@ class GP(AbstractModel):
     # sampling y from p(y | theta)
     def sample_from_prior(self, pred, n_samples=1, joint=True):
         fants = np.zeros((pred.shape[0], n_samples))
-        for i in xrange(n_samples):
+        for i in range(n_samples):
             for param in self.params:
                 param.sample_from_prior() # sample from hyperpriors and set value
             fants[:,i] = self.sample_from_prior_given_hypers(pred, joint)
@@ -664,7 +665,7 @@ class GP(AbstractModel):
     # sampling y from p(y | theta, data)
     def sample_from_posterior_given_data(self, pred, n_samples=1, joint=True):
         fants = np.zeros((pred.shape[0], n_samples))
-        for i in xrange(n_samples):
+        for i in range(n_samples):
             # Sample theta from p(theta | data)
             self.generate_sample(1)
             # Sample y from p(y | theta, data)

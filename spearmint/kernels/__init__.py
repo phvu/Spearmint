@@ -1,8 +1,10 @@
-from matern           import Matern52
-from sum_kernel       import SumKernel
-from product_kernel   import ProductKernel
-from noise            import Noise
-from scale            import Scale
-from transform_kernel import TransformKernel
+from __future__ import absolute_import
+
+from spearmint.kernels.matern import Matern52
+from spearmint.kernels.noise import Noise
+from spearmint.kernels.product_kernel import ProductKernel
+from spearmint.kernels.scale import Scale
+from spearmint.kernels.sum_kernel import SumKernel
+from spearmint.kernels.transform_kernel import TransformKernel
 
 __all__ = ["Matern52", "SumKernel", "ProductKernel", "Noise", "Scale", "TransformKernel"]

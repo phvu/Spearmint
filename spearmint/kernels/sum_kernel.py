@@ -182,7 +182,7 @@
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
 
-
+import functools
 from .abstract_kernel import AbstractKernel
 
 
@@ -191,15 +191,15 @@ class SumKernel(AbstractKernel):
         self.kernels = kernels
 
     def cov(self, inputs):
-        return reduce(lambda K1, K2: K1+K2, [kernel.cov(inputs) for kernel in self.kernels])
+        return functools.reduce(lambda K1, K2: K1+K2, [kernel.cov(inputs) for kernel in self.kernels])
 
     def diag_cov(self, inputs):
-        return reduce(lambda K1, K2: K1+K2, [kernel.diag_cov(inputs) for kernel in self.kernels])
+        return functools.reduce(lambda K1, K2: K1+K2, [kernel.diag_cov(inputs) for kernel in self.kernels])
 
     def cross_cov(self, inputs_1, inputs_2):
-        return reduce(lambda K1, K2: K1+K2, [kernel.cross_cov(inputs_1,inputs_2) for kernel in self.kernels])
+        return functools.reduce(lambda K1, K2: K1+K2, [kernel.cross_cov(inputs_1,inputs_2) for kernel in self.kernels])
 
     # This is the gradient wrt **inputs_2**
     def cross_cov_grad_data(self, inputs_1, inputs_2):
-        return reduce(lambda dK1, dK2: dK1+dK2, [kernel.cross_cov_grad_data(inputs_1,inputs_2) for kernel in self.kernels])
+        return functools.reduce(lambda dK1, dK2: dK1+dK2, [kernel.cross_cov_grad_data(inputs_1,inputs_2) for kernel in self.kernels])
 

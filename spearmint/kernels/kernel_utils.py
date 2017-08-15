@@ -184,7 +184,6 @@
 
 
 import numpy as np
-import scipy.weave
 from scipy.spatial.distance import cdist
 
 def dist2(ls, x1, x2=None):
@@ -228,12 +227,13 @@ def grad_dist2(ls, x1, x2=None):
           gX(i,j,d) = (2/ls(d))*(x1(i,d) - x2(j,d));
     """
     try:
+        import scipy.weave
         scipy.weave.inline(code, ['x1','x2','gX','ls','M','N','D'], \
                            type_converters=scipy.weave.converters.blitz, \
                            compiler='gcc')
     except:
     # The C code weave above is 10x faster than this:
-        for i in xrange(0,x1.shape[0]):
+        for i in range(0,x1.shape[0]):
             gX[i,:,:] = 2*(x1[i,:] - x2[:,:])*(1/ls)
 
     return gX

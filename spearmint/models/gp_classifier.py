@@ -181,7 +181,8 @@
 # 13. End User represents and warrants that it has the legal authority
 # to enter into this License and Terms of Use on behalf of itself and
 # its Institution.
-
+from __future__ import print_function
+from __future__ import absolute_import
 
 import copy
 import sys, logging
@@ -191,24 +192,23 @@ import scipy.linalg      as spla
 import scipy.optimize    as spo
 import scipy.io          as sio
 import scipy.stats       as sps
-import scipy.weave
 
 
-from .gp                                     import GP
-from ..utils.param                           import Param as Hyperparameter
-from ..kernels                               import Matern52, Noise, Scale, SumKernel, TransformKernel
-from ..sampling.slice_sampler                import SliceSampler
-from ..sampling.whitened_prior_slice_sampler import WhitenedPriorSliceSampler
-from ..sampling.elliptical_slice_sampler     import EllipticalSliceSampler
-from ..utils                                 import priors
-from ..transformations                       import BetaWarp, Transformer
+from spearmint.models.gp                                     import GP
+from spearmint.utils.param                           import Param as Hyperparameter
+from spearmint.kernels                               import Matern52, Noise, Scale, SumKernel, TransformKernel
+from spearmint.sampling.slice_sampler                import SliceSampler
+from spearmint.sampling.whitened_prior_slice_sampler import WhitenedPriorSliceSampler
+from spearmint.sampling.elliptical_slice_sampler     import EllipticalSliceSampler
+from spearmint.utils                                 import priors
+from spearmint.transformations                       import BetaWarp, Transformer
 
 try:
     module = sys.modules['__main__'].__file__
     log    = logging.getLogger(module)
 except:
     log = logging.getLogger()
-    print 'Not running from main.'
+    print('Not running from main.')
 
 class GPClassifier(GP):
     def __init__(self, num_dims, **options):
@@ -283,7 +283,7 @@ class GPClassifier(GP):
         default_latent_values = self.counts - 0.5
 
         latent_values = np.zeros(self._inputs.shape[0])
-        for i in xrange(self._inputs.shape[0]):
+        for i in range(self._inputs.shape[0]):
             key = str(hash(self._inputs[i].tostring()))
             
             if key in latent_values_dict:
@@ -296,7 +296,7 @@ class GPClassifier(GP):
     def _burn_samples(self, num_samples):
         # sys.stderr.write('GPClassifer: burning %s: ' % ', '.join(self.params.keys()))
         # sys.stderr.write('%04d/%04d' % (0, num_samples))
-        for i in xrange(num_samples):
+        for i in range(num_samples):
             # sys.stderr.write('\b'*9+'%04d/%04d' % (i, num_samples))
             for sampler in self._samplers:
                 sampler.sample(self)
@@ -312,7 +312,7 @@ class GPClassifier(GP):
         # sys.stderr.write('%04d/%04d' % (0, num_samples))
         hypers_list        = []
         latent_values_list = []
-        for i in xrange(num_samples):
+        for i in range(num_samples):
             # sys.stderr.write('\b'*9+'%04d/%04d' % (i, num_samples))
             for sampler in self._samplers:
                 sampler.sample(self)
@@ -483,7 +483,7 @@ class GPClassifier(GP):
         # so that each latent value is associated with its input
         # then when we load them in we know which ones are which
         gp_dict['latent values'] = {str(hash(self._inputs[i].tostring())) : self.latent_values.value[i] 
-                for i in xrange(self._inputs.shape[0])}
+                for i in range(self._inputs.shape[0])}
 
         gp_dict['chain length'] = self.chain_length
 
